@@ -8,13 +8,13 @@ from .llm_agents import run_ai_agent
 
 
 def run_disruption_analysis(disruption):
-    # Existing deterministic agents
+    # Run the existing rule-based specialist agents
     detection = detect(disruption)
     inventory = inventory_assess(disruption)
     supplier = supplier_assess(disruption)
     logistics = logistics_assess(disruption)
 
-    # Context supplied to the AI from our existing sample data
+    # Prepare context for the AI coordinator
     context = {
         "disruption": disruption,
         "detection": detection,
@@ -24,33 +24,42 @@ def run_disruption_analysis(disruption):
         "sample_data": get_sample_data(),
     }
 
-    # Real LLM-powered coordinator
+    # Run the LLM-powered coordinator
     ai_result = run_ai_agent(
         agent_name="AI Response Coordinator",
         instructions=(
             "Review the specialist agent findings. "
             "Prioritize actions by urgency, explain trade-offs, "
             "and provide a concise response plan. "
+            "Use only the supplied data. Clearly identify assumptions. "
             "Do not claim that actions have been executed."
         ),
         data=context,
     )
 
-    results = [detection, inventory, supplier, logistics]
+    # Collect all agent results
+    results = [
+        detection,
+        inventory,
+        supplier,
+        logistics,
+        ai_result,
+    ]
 
     category = ", ".join(detection["categories"])
+
+    # Build recommended actions
     actions = []
     actions.extend(inventory["recommendations"])
     actions.append(supplier["recommendation"])
     actions.append(logistics["recommendation"])
 
-    # Keep the original workflow working if AI is unavailable.
-    if ai_result["status"] == "success":
+    # Include the AI response when available
+    if ai_result.get("status") == "success":
         actions.append(
-            "AI coordinator response: " + ai_result["analysis"]
+            "AI coordinator response: "
+            + ai_result.get("analysis", "")
         )
-
-    results.append(ai_result)
 
     return {
         "disruption": disruption,
@@ -60,10 +69,10 @@ def run_disruption_analysis(disruption):
         ),
         "agents": results,
         "recommended_actions": actions,
-        "ai_enabled": ai_result["status"] == "success",
+        "ai_enabled": ai_result.get("status") == "success",
         "disclaimer": (
-            "Uses sample supply-chain data and rule-based specialist "
-            "agents with an optional LLM-powered coordinator. "
+            "This is a demonstration using rule-based agents, "
+            "sample data, and an optional LLM-powered coordinator. "
             "No live ERP, supplier feed, or autonomous purchasing "
             "is connected."
         ),
