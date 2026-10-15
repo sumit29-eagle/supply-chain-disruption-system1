@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SupplyChain Sentinel</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">S</span><div><b>SupplyChain</b><small> SENTINEL</small></div></div>
+    <div class="nav-label">WORKSPACE</div>
+    <a class="nav active" href="/">▦ &nbsp; Control Tower</a>
+    <a class="nav" href="#shipments">⇄ &nbsp; Shipments</a>
+    <a class="nav" href="#inventory">▤ &nbsp; Inventory</a>
+    <a class="nav" href="#agents">✳ &nbsp; AI Agents</a>
+    <div class="sidebar-bottom"><div class="status-dot"></div><span>Demo environment</span></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><p class="eyebrow">SUPPLY CHAIN INTELLIGENCE</p><h1>Control Tower</h1><p class="sub">Monitor disruptions. Coordinate response. Protect delivery.</p></div><div class="top-right"><span class="live"><i></i> SYSTEM ONLINE</span><div class="avatar">SC</div></div></header>
+    <section class="metrics" id="metrics">
+      <article class="metric"><div class="metric-label">Total Orders <span>↗</span></div><div class="metric-value" id="orders">—</div><div class="metric-foot">Tracked in sample dataset</div></article>
+      <article class="metric"><div class="metric-label">Delayed Shipments <span class="orange">!</span></div><div class="metric-value" id="delayed">—</div><div class="metric-foot"><span class="orange">Needs attention</span></div></article>
+      <article class="metric"><div class="metric-label">Low Stock Items <span class="orange">⌁</span></div><div class="metric-value" id="lowstock">—</div><div class="metric-foot">At or below reorder level</div></article>
+      <article class="metric"><div class="metric-label">At-risk Suppliers <span class="red">◈</span></div><div class="metric-value" id="suppliers">—</div><div class="metric-foot">Sample risk score ≥ 7</div></article>
+    </section>
+    <section class="panel analysis-panel">
+      <div class="panel-heading"><div><p class="eyebrow">MULTI-AGENT RESPONSE</p><h2>Analyze a disruption</h2></div><span class="pill">4 agents ready</span></div>
+      <p class="muted">Describe what happened. The agents will classify the issue and propose coordinated next steps.</p>
+      <form id="analysis-form"><label for="disruption">DISRUPTION DESCRIPTION</label><textarea id="disruption" required placeholder="Example: A storm has delayed our shipment at the port by 4 days and sensor inventory is running low."></textarea><div class="form-bottom"><span class="hint">Uses sample data and rule-based agent logic</span><button type="submit" id="analyze-btn">Run analysis <span>→</span></button></div></form>
+      <div id="analysis-result" class="result hidden"></div>
+    </section>
+    <section class="two-col">
+      <section class="panel" id="shipments"><div class="panel-heading"><div><p class="eyebrow">LOGISTICS</p><h2>Shipment status</h2></div><span class="pill">Sample data</span></div><div class="table-wrap"><table><thead><tr><th>SHIPMENT</th><th>ROUTE</th><th>STATUS</th><th>ETA</th></tr></thead><tbody id="shipment-rows"></tbody></table></div></section>
+      <section class="panel" id="inventory"><div class="panel-heading"><div><p class="eyebrow">INVENTORY HEALTH</p><h2>Stock levels</h2></div><span class="pill">Sample data</span></div><div id="inventory-rows" class="stock-list"></div></section>
+    </section>
+    <section class="panel agents-panel" id="agents"><div class="panel-heading"><div><p class="eyebrow">ORCHESTRATION LAYER</p><h2>Agent network</h2></div><span class="pill green-pill">Ready</span></div><div class="agent-grid"><div class="agent-card"><div class="agent-icon purple">⌕</div><b>Disruption Detector</b><p>Classifies incident type and severity.</p><span>RULE ENGINE</span></div><div class="agent-card"><div class="agent-icon blue">▤</div><b>Inventory Agent</b><p>Checks low-stock items and allocation.</p><span>INVENTORY</span></div><div class="agent-card"><div class="agent-icon orange-bg">◎</div><b>Supplier Agent</b><p>Ranks illustrative supplier options.</p><span>PROCUREMENT</span></div><div class="agent-card"><div class="agent-icon green-bg">⇄</div><b>Logistics Agent</b><p>Suggests route and carrier contingencies.</p><span>TRANSPORT</span></div></div></section>
+    <footer>SupplyChain Sentinel · Academic project prototype · Sample data only</footer>
+  </main>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
